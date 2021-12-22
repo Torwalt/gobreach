@@ -14,3 +14,8 @@ clean:
 
 test:
 	go test ./... -v -short
+
+testCov:
+	go test ./... -v -short -coverprofile cover.out && \
+	go tool cover -html=cover.out
+

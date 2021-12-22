@@ -1,18 +1,15 @@
 package hibp
 
-const BaseURL = "https://haveibeenpwned.com/api/v3/"
-
 type hibpConfig struct {
-	BaseURL string
-	APIKey  string
+	host       string
+	apiKey     string
+	maxRetries int
 }
 
-func NewhibpConfig(baseURL string, apiKey string) hibpConfig {
-	if baseURL == "" {
-		baseURL = BaseURL
-	}
+func NewhibpConfig(host, apiKey string, maxRetries int) hibpConfig {
 	return hibpConfig{
-		BaseURL: baseURL,
-		APIKey:  apiKey,
+		host:       host,
+		apiKey:     apiKey,
+		maxRetries: maxRetries,
 	}
 }

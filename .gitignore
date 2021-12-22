@@ -1,1 +1,4 @@
 gobreach_server
+*.out
+*cover*
+.env
