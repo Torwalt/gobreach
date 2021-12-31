@@ -4,6 +4,26 @@ BINARY_NAME=gobreach_server
 build:
 	go build -o ${BINARY_NAME} ./cmd/server/main.go
 
+build-docker:
+	sudo docker build \
+		--build-arg HTTP_PORT=${HTTP_PORT} \
+		--build-arg BINARY_NAME=${BINARY_NAME} . -t ${BINARY_NAME}
+
+run-docker:
+	sudo docker run -p ${HTTP_PORT}:${HTTP_PORT} ${BINARY_NAME}
+
+run-dockerd:
+	sudo docker run -p ${HTTP_PORT}:${HTTP_PORT} -d ${BINARY_NAME}
+
+run-docker-compose:
+	sudo docker-compose up --build
+
+run-docker-composed:
+	sudo docker-compose up --build -d
+
+down-docker-compose:
+	sudo docker-compose down
+
 run:
 	go build -o ${BINARY_NAME} ./cmd/server/main.go
 	./${BINARY_NAME}
@@ -15,7 +35,7 @@ clean:
 test:
 	go test ./... -v -short
 
-testCov:
+test-cov:
 	go test ./... -v -short -coverprofile cover.out && \
 	go tool cover -html=cover.out
 

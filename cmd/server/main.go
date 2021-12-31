@@ -30,8 +30,8 @@ func run(l *log.Logger, c *config.Config) error {
 	bS := breach.NewService(nil, hclient)
 	r := http_routes.NewRouter(bS, l)
 
-	l.Printf("Server listening on port %v", c.ServerPort)
-	err := http.ListenAndServe(c.ServerPort, r.Router)
+	l.Printf("Server listening on port %v", c.HTTPPort)
+	err := http.ListenAndServe(":" + c.HTTPPort, r.Router)
 	if err != nil {
 		return fmt.Errorf("could not start server: %v", err)
 	}

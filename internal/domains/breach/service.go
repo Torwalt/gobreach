@@ -14,19 +14,20 @@ func NewService(byDomainRetriever ByDomainRetriever, byEmailRetriever ByEmailRet
 
 // Retrieve all breaches found for an email
 func (s *BreachService) GetByEmail(email string) ([]Breach, *Error) {
+	empty := []Breach{}
 	err := IsEmail(email)
 	if err != nil {
-		return []Breach{}, NewErrorf(BreachValidationErr, "invalid email address: %v", email)
+		return empty, NewErrorf(BreachValidationErr, "invalid email address: %v", email)
 	}
 
-	bS, errr := s.byEmailRetriever.GetByEmail(email)
+	bS, bErr := s.byEmailRetriever.GetByEmail(email)
 
-	if errr != nil {
-		switch code := errr.ErrCode; code {
+	if bErr != nil {
+		switch code := bErr.ErrCode; code {
 		case BreachNotFoundErr:
-			return []Breach{}, nil
+			return empty, nil
 		default:
-			return []Breach{}, errr
+			return empty, bErr
 		}
 	}
 
