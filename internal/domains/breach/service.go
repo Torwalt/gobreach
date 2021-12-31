@@ -1,21 +1,39 @@
 package breach
 
 type BreachService struct {
-	ByDomainRetriever ByDomainRetriever
-	ByEmailRetriever  ByEmailRetriever
+	byDomainRetriever ByDomainRetriever
+	byEmailRetriever  ByEmailRetriever
 }
 
 func NewService(byDomainRetriever ByDomainRetriever, byEmailRetriever ByEmailRetriever) *BreachService {
 	return &BreachService{
-		ByDomainRetriever: byDomainRetriever,
-		ByEmailRetriever:  byEmailRetriever,
+		byDomainRetriever: byDomainRetriever,
+		byEmailRetriever:  byEmailRetriever,
 	}
 }
 
-func (s *BreachService) GetByEmail(email string) (Breach, Error) {
-	return s.ByEmailRetriever.GetByEmail(email)
+// Retrieve all breaches found for an email
+func (s *BreachService) GetByEmail(email string) ([]Breach, *Error) {
+	err := IsEmail(email)
+	if err != nil {
+		return []Breach{}, NewErrorf(BreachValidationErr, "invalid email address: %v", email)
+	}
+
+	bS, errr := s.byEmailRetriever.GetByEmail(email)
+
+	if errr != nil {
+		switch code := errr.ErrCode; code {
+		case BreachNotFoundErr:
+			return []Breach{}, nil
+		default:
+			return []Breach{}, errr
+		}
+	}
+
+	return bS, nil
 }
 
-func (s *BreachService) GetByDomain(domain string) (Breach, Error) {
-	return s.ByDomainRetriever.GetByDomain(domain)
+// Retrieve all breaches found for a domain
+func (s *BreachService) GetByDomain(domain string) ([]Breach, *Error) {
+	return s.byDomainRetriever.GetByDomain(domain)
 }

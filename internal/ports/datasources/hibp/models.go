@@ -1,6 +1,6 @@
 package hibp
 
-type HIBPResponseBody struct {
+type hibp200ResponseBreach struct {
 	Name         string   `json:"Name"`
 	Title        string   `json:"Title"`
 	Domain       string   `json:"Domain"`
@@ -11,9 +11,14 @@ type HIBPResponseBody struct {
 	Description  string   `json:"Description"`
 	DataClasses  []string `json:"DataClasses"`
 	IsVerified   bool     `json:"IsVerified"`
-	IsFabricated bool     `json:"IsFabricated"`
 	IsSensitive  bool     `json:"IsSensitive"`
 	IsRetired    bool     `json:"IsRetired"`
 	IsSpamList   bool     `json:"IsSpamList"`
-	LogoPath     string   `json:"LogoPath"`
 }
+
+// e.g. { "statusCode": 429, "message": "Rate limit is exceeded. Try again in 6 seconds." }
+type hibp429ResponseBody struct {
+	StatusCode int    `json:"statusCode"`
+	Message    string `json:"message"`
+}
+
