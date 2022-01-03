@@ -62,7 +62,7 @@ func (bh *breachHandler) getBreaches(w http.ResponseWriter, r *http.Request) {
 			BreachDate: b.BreachDate, BreachSource: b.BreachSource})
 	}
 	data, errr := json.Marshal(rs)
-	if err != nil {
+	if errr != nil {
 		bh.logger.Printf("error marshalling result to JSON: %v", errr)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return

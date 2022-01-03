@@ -39,3 +39,7 @@ test-cov:
 	go test ./... -v -short -coverprofile cover.out && \
 	go tool cover -html=cover.out
 
+init-db:
+	cat ./internal/ports/persistence/sql/schema.sql | psql -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -U ${POSTGRES_USER} -d ${POSTGRES_NAME} -1
+
+

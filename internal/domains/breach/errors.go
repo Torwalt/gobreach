@@ -13,6 +13,7 @@ const (
 	DatasourceErr ErrorCode = iota
 	BreachNotFoundErr
 	BreachValidationErr
+	BreachRepositoryErr
 )
 
 func NewError(code ErrorCode, msg string) *Error {
